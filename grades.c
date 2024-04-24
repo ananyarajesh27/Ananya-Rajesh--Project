@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "student.h"
 
 int getGradePoints(char grade) {
@@ -18,7 +17,7 @@ int getGradePoints(char grade) {
         case 'F':
             return 0;
         default:
-            return -1; 
+            return -1; // Invalid grade
     }
 }
 
@@ -40,28 +39,26 @@ char calculateGrade(int marks) {
     }
 }
 
-float calculateSGPA(int marks[][3], int numSubjects) {
+float calculateSGPA(int (*marks)[3]) {
     int totalCredits = 0;
     float totalGradePoints = 0;
+    int credits[] = {4, 5, 3, 5, 4}; // Credits per subject
 
-    
-    int credits[] = {4, 5, 3, 5, 4};
-
-    
-    for (int i = 0; i < numSubjects; i++) {
+    for (int i = 0; i < NUM_SUBJECTS; i++) {
         int totalMarks = 0;
         for (int j = 0; j < 3; j++) {
             totalMarks += marks[i][j];
         }
-        int subjectMarks = totalMarks / 2; 
-        subjectMarks = subjectMarks + (marks[i][2] * 2) / 5; 
+        int subjectMarks = totalMarks / 2;
+        subjectMarks = subjectMarks + (marks[i][2] * 2) / 5;
         char grade = calculateGrade(subjectMarks);
         int gradePoints = getGradePoints(grade);
         totalGradePoints += gradePoints * credits[i];
         totalCredits += credits[i];
     }
 
-    
     float sgpa = totalGradePoints / totalCredits;
     return sgpa;
 }
+
+
