@@ -1,34 +1,30 @@
 #include "student.h"
 
-void getStudentDetails(Student *student) {
+void getStudentDetailsFromFile(FILE *file, Student *student) {
+    char buffer[256];
     char *subjects[] = {"Maths", "PSWC", "Mechanical", "Physics", "Electrical"};
-    char *exams[] = {"ISA1", "ISA2", "ESA"};
-    int i, j;
 
-    student->name = malloc(MAX_NAME_LENGTH * sizeof(char));
-    student->srn = malloc(MAX_SRN_LENGTH * sizeof(char));
+    
+    if (fgets(buffer, sizeof(buffer), file)) {
+        
+        student->name = malloc(MAX_NAME_LENGTH * sizeof(char));
+        student->srn = malloc(MAX_SRN_LENGTH * sizeof(char));
+        student->marks = malloc(NUM_SUBJECTS * sizeof(int[3]));
 
-    printf("Enter student name: ");
-    fgets(student->name, MAX_NAME_LENGTH, stdin);
-    student->name[strcspn(student->name, "\n")] = '\0'; // remove newline character
+        
+        sscanf(buffer, "%49[^,],%13[^,],%d", student->name, student->srn, &student->semester);
 
-    printf("Enter SRN: ");
-    fgets(student->srn, MAX_SRN_LENGTH, stdin);
-    student->srn[strcspn(student->srn, "\n")] = '\0'; // remove newline character
+        char *token = strtok(buffer, ",");
+        token = strtok(NULL, ",");
+        token = strtok(NULL, ",");
 
-    printf("Enter semester: ");
-    scanf("%d", &student->semester);
-
-    student->marks = malloc(NUM_SUBJECTS * sizeof(int[3]));
-    printf("Enter marks for %d subjects for each of the 3 examinations:\n", NUM_SUBJECTS);
-    for (i = 0; i < NUM_SUBJECTS; i++) {
-        printf("Subject: %s\n", subjects[i]);
-        for (j = 0; j < 3; j++) {
-            printf("Enter marks for %s: ", exams[j]);
-            scanf("%d", &student->marks[i][j]);
+        for (int i = 0; i < NUM_SUBJECTS; i++) {
+            for (int j = 0; j < 3; j++) {
+                token = strtok(NULL, ",");
+                student->marks[i][j] = atoi(token);
+            }
         }
     }
-    getchar(); // consume newline character after scanf
 }
 
 void freeStudent(Student *student) {

@@ -17,7 +17,7 @@ int getGradePoints(char grade) {
         case 'F':
             return 0;
         default:
-            return -1; // Invalid grade
+            return -1; 
     }
 }
 
@@ -42,7 +42,7 @@ char calculateGrade(int marks) {
 float calculateSGPA(int (*marks)[3]) {
     int totalCredits = 0;
     float totalGradePoints = 0;
-    int credits[] = {4, 5, 3, 5, 4}; // Credits per subject
+    int credits[] = {4, 5, 3, 5, 4}; 
 
     for (int i = 0; i < NUM_SUBJECTS; i++) {
         int totalMarks = 0;
@@ -60,5 +60,3 @@ float calculateSGPA(int (*marks)[3]) {
     float sgpa = totalGradePoints / totalCredits;
     return sgpa;
 }
-
-

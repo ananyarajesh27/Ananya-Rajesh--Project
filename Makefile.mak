@@ -1,19 +1,24 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = -Wall -Wextra -pedantic -std=c11
+OBJS = student.o grades.o display.o main.o
+TARGET = student_grades
 
-SRCS = main.c student.c grades.c display.c
-OBJS = $(SRCS:.c=.o)
-EXEC = grade_card
+all: $(TARGET)
 
-.PHONY: all clean
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-all: $(EXEC)
+student.o: student.c student.h
+	$(CC) $(CFLAGS) -c student.c
 
-$(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+grades.o: grades.c student.h
+	$(CC) $(CFLAGS) -c grades.c
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+display.o: display.c student.h
+	$(CC) $(CFLAGS) -c display.c
+
+main.o: main.c student.h
+	$(CC) $(CFLAGS) -c main.c
 
 clean:
-	rm -f $(EXEC) $(OBJS)
+	rm -f $(OBJS) $(TARGET)
